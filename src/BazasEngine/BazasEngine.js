@@ -274,7 +274,7 @@ class BazasEngine {
   }
 
   getScoreTable() {
-
+    return this.getPlayers().sort((a, b) => a.score - b.score);
   }
 }
 
