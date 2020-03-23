@@ -18,7 +18,14 @@ class Player {
   }
 
   setHand(cards) {
-    this.hand = cards;
+    const sorted = cards.sort((a, b) => {
+      if (a.suit === b.suit) {
+        return a.value - b.value;
+      }
+
+      return a.suit > b.suit ? 1 : -1;
+    })
+    this.hand = sorted;
   }
 
   addPoints(points) {

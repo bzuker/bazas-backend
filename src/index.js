@@ -11,7 +11,7 @@ const rooms = [];
 app.use(cors());
 app.use(bodyParser.json());
 
-const port = process.env.PORT;
+const port = process.env.PORT || 8080;
 server.listen(port, {}, _ => console.log(`Listening on http://localhost:${port}`));
 
 // Serve the root url: http://expressjs.com/en/starter/basic-routing.html
