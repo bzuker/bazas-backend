@@ -85,7 +85,7 @@ class Room {
           this.room.emit("next", this.getRoomInfo());
 
           if (nextRound === 'GAME OVER') {
-            this.room.emit('game over', this.bazas.getScoreTable())
+            this.room.emit('game over', this.bazas.getScoreTable());
           }
 
           if (nextRound) {
