@@ -83,6 +83,11 @@ class Room {
           const nextRound = this.bazas.endCircle();
           await waitSeconds(5);
           this.room.emit("next", this.getRoomInfo());
+
+          if (nextRound === 'GAME OVER') {
+            this.room.emit('game over', this.bazas.getScoreTable())
+          }
+
           if (nextRound) {
             this.participants.forEach(x =>
               x.socket.emit("cards", x.player.hand)

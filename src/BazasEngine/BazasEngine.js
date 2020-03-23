@@ -9,6 +9,7 @@ class BazasEngine {
   constructor(settings = defaultSettings) {
     this.settings = settings;
     this.players = [];
+    this.rounds = [];
     this.deck = createDeck();
     this.currentRound = {
       started: false,
@@ -172,13 +173,12 @@ class BazasEngine {
   }
 
   setNextRound() {
-    // TODO: store current round
-
+    this.storeRound();
     this.calculateScores();
 
     if (this.isGameOver()) {
       // TODO: store the game
-      return;
+      return 'GAME OVER';
     }
 
     this.players.forEach(x => x.resetBazas());
@@ -207,6 +207,17 @@ class BazasEngine {
     this.deck = createDeck();
     this.deal();
     return this.currentRound;
+  }
+
+  storeRound() {
+    this.rounds.push({
+      cards: this.currentRound.cards,
+      triumphCard: this.currentRound.triumphCard,
+      firstToPlay: this.currentRound.firstToPlay,
+      requestedBazas: this.currentRound.requestedBazas,
+      playedCards: this.currentRound.playedCards,
+      winners: this.currentRound.winners
+    });
   }
 
   calculateScores() {
@@ -260,6 +271,10 @@ class BazasEngine {
         playedCard: playedCard ? playedCard.card : null
       };
     });
+  }
+
+  getScoreTable() {
+
   }
 }
 
