@@ -103,6 +103,10 @@ class BazasEngine {
       throw new Error(`Player ${player.name} has already played this round`);
     }
 
+    if (playerId !== this.currentRound.nextToPlay) {
+      throw new Error(`It's not player ${player.name}'s turn.`);
+    }
+
     if (this.currentRound.playedCards.length === 0) {
       this.currentRound.firstCard = card;
     } else {

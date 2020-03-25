@@ -72,11 +72,11 @@ class Room {
       try {
         const winner = this.bazas.playCard(playerId, card);
         const player = this.bazas.players.find(x => x.id === playerId);
-        // Remove the card from the player
-        socket.emit("cards", player.hand);
-
         // Send everyone the new info
         this.room.emit("next", this.getRoomInfo());
+        
+        // Remove the card from the player
+        socket.emit("cards", player.hand);
 
         // If there was a winner, we wait 5 seconds and continue
         if (winner) {
@@ -95,8 +95,8 @@ class Room {
           }
         }
       } catch (error) {
-        console.log("Invalid card played");
-        socket.emit("invalid card");
+        console.log("Invalid card played", error);
+        socket.emit("invalid card", error);
       }
     });
   }
