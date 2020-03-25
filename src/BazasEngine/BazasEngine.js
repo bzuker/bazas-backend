@@ -29,6 +29,7 @@ class BazasEngine {
   }
 
   startGame() {
+    const firstPlayer = this.players[Math.floor(Math.random() * this.players.length)];
     this.currentRound = {
       started: true,
       doneRequestingBazas: false,
@@ -37,8 +38,8 @@ class BazasEngine {
       cardsRemaining: this.settings.initialCardAmount,
       triumphCard: null,
       firstCard: null,
-      firstToPlay: this.players[0].id, // TODO: Random first player
-      nextToPlay: this.players[0].id,
+      firstToPlay: firstPlayer,
+      nextToPlay: firstPlayer,
       requestedBazas: [],
       playedCards: [],
       winners: [],
