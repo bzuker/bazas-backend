@@ -39,18 +39,27 @@ class Room {
   }
 
   onAddPlayer(socket) {
-    socket.on("add player", name => {
-      if (this.started) {
+    socket.on("add player", (name, pwd) => {
+      const participant = this.participants.find(x => x.pwd === pwd && x.player.name === name);
+      if (this.started && !participant) {
         socket.emit("not joined");
         return;
       }
 
-      console.log("Adding player", name);
-      const player = this.bazas.addPlayer(name);
-      this.participants.push({ socket, player });
-
-      // Tell everyone that someone joined
-      socket.broadcast.emit("join", player);
+      let player;
+      // Participant is reconnecting
+      if (participant) {
+        participant.socket = socket;
+        player = participant.player;
+        socket.emit('cards', player.hand);
+      } else {
+        console.log("Adding player", name);
+        player = this.bazas.addPlayer(name);
+        this.participants.push({ socket, player, pwd });
+  
+        // Tell everyone that someone joined
+        socket.broadcast.emit("join", player);
+      }
 
       // Give the user the room info
       socket.emit("login", player, this.getRoomInfo());
@@ -115,15 +124,6 @@ class Room {
   addEventListeners() {
     this.room.on("connection", socket => {
       console.log(`Connected to room ${this.id}. SocketID: ${socket.id}.`);
-      console.log('socket query', socket.handshake.query);
-      
-      if (socket.handshake.query.id) {
-        const participant = this.participants.find(x => x.player.id === socket.handshake.query.id);
-        if (participant) {
-          console.log(`Reconnecting ${participant.player.name}`);
-          participant.socket = socket;
-        }
-      }
 
       this.onAddPlayer(socket);
       this.onStartGame(socket);
