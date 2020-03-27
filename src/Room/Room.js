@@ -125,6 +125,14 @@ class Room {
     this.room.on("connection", socket => {
       console.log(`Connected to room ${this.id}. SocketID: ${socket.id}.`);
 
+      if (socket.handshake.query.id) {
+        const participant = this.participants.find(x => x.player.id === socket.handshake.query.id);
+        if (participant) {
+          console.log(`Reconnecting ${participant.player.name}`);
+          participant.socket = socket;
+        }
+      }
+
       this.onAddPlayer(socket);
       this.onStartGame(socket);
       this.onPlayCard(socket);

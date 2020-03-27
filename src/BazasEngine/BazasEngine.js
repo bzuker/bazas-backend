@@ -188,7 +188,7 @@ class BazasEngine {
 
     this.players.forEach(x => x.resetBazas());
     const cards = this.currentRound.increasing
-      ? this.currentRound.cards + 1
+      ? this.currentRound.cards === this.settings.lastCardAmount ? this.currentRound.cards : this.currentRound.cards + 1
       : this.currentRound.cards - 1;
     const nextPlayer = this.playerToTheRight(this.currentRound.firstToPlay);
     this.currentRound = {
@@ -197,7 +197,7 @@ class BazasEngine {
       cards,
       increasing:
         this.currentRound.increasing &&
-        this.currentRound.cards + 1 < this.settings.lastCardAmount,
+        this.currentRound.cards < this.settings.lastCardAmount,
       cardsRemaining: cards,
       triumphCard: null,
       firstCard: null,
