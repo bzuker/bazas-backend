@@ -2,7 +2,8 @@ const { Player } = require("./Player");
 const { createDeck } = require("./Deck");
 const defaultSettings = {
   initialCardAmount: 3,
-  lastCardAmount: 8
+  lastCardAmount: 8,
+  selectStartingPlayer: false
 };
 
 class BazasEngine {
@@ -28,8 +29,8 @@ class BazasEngine {
     };
   }
 
-  startGame() {
-    const firstPlayer = this.players[Math.floor(Math.random() * this.players.length)];
+  startGame(selectedPlayer) {
+    const firstPlayer = selectedPlayer || this.players[Math.floor(Math.random() * this.players.length)];
     this.currentRound = {
       started: true,
       doneRequestingBazas: false,

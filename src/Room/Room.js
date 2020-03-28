@@ -34,6 +34,7 @@ class Room {
     return {
       started: this.started,
       players: this.bazas.getPlayers(),
+      settings: this.bazas.settings,
       currentRound: this.bazas.currentRound
     };
   }
@@ -67,10 +68,14 @@ class Room {
   }
 
   onStartGame(socket) {
-    socket.on("start game", () => {
-      console.log("Starting game...");
+    socket.on("start game", (player) => {
+      if (this.started) {
+        return;
+      }
+      
+      console.log("Starting game, player", player);
       this.started = true;
-      this.bazas.startGame();
+      this.bazas.startGame(player);
       this.participants.forEach(x => x.socket.emit("cards", x.player.hand));
       this.room.emit("game started", this.getRoomInfo());
     });
