@@ -16,7 +16,7 @@ class BazasEngine {
       started: false,
       doneRequestingBazas: false,
       cards: this.settings.initialCardAmount,
-      increasing: true,
+      increasing: this.settings.initialCardAmount <= this.settings.lastCardAmount,
       cardsRemaining: this.settings.initialCardAmount,
       triumphCard: null,
       firstCard: null,
@@ -35,7 +35,7 @@ class BazasEngine {
       started: true,
       doneRequestingBazas: false,
       cards: this.settings.initialCardAmount,
-      increasing: true,
+      increasing: this.settings.initialCardAmount <= this.settings.lastCardAmount,
       cardsRemaining: this.settings.initialCardAmount,
       triumphCard: null,
       firstCard: null,
@@ -54,7 +54,7 @@ class BazasEngine {
     this.deck.shuffle();
     for (const player of this.players) {
       const cards = this.deck.drawRandom(this.currentRound.cards);
-      player.setHand(cards);
+      player.setHand(Array.isArray(cards) ? cards : [cards]);
     }
 
     this.currentRound.triumphCard = this.deck.draw();
@@ -239,6 +239,10 @@ class BazasEngine {
   }
 
   isGameOver() {
+    if (this.settings.initialCardAmount >= this.settings.lastCardAmount) {
+      return this.currentRound.cards === this.settings.lastCardAmount;
+    }
+
     return (
       !this.currentRound.increasing &&
       this.currentRound.cards === this.settings.initialCardAmount
