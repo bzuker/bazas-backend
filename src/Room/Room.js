@@ -109,8 +109,8 @@ class Room {
           }
         }
       } catch (error) {
-        console.log("Invalid card played", error);
-        socket.emit("invalid card", error);
+        console.error("Error on play card", error);
+        socket.emit("invalid", error.message);
       }
     });
   }
@@ -121,7 +121,7 @@ class Room {
         this.bazas.requestBazas(playerId, bazas);
         this.room.emit("next", this.getRoomInfo());
       } catch (error) {
-        socket.emit("invalid request");
+        socket.emit("invalid", error.message);
       }
     });
   }
@@ -144,7 +144,8 @@ class Room {
       this.onBazaRequest(socket);
 
       socket.on("disconnect", () => {
-        console.info(`${socket.id} disconnected from room ${this.id}`);
+        const participant = this.participants.find(x => x.socket.id === socket.id);
+        console.info(`${socket.id} disconnected from room ${this.id}`, participant && participant.player);
       });
     });
   }

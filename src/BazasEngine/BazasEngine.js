@@ -71,10 +71,10 @@ class BazasEngine {
     }
 
     if (this.currentRound.requestedBazas.length + 1 === this.players.length) {
-      // TODO: Check that the amount of requested is != to cards dealt
       if (!this.isValidBazasRequest(parseInt(bazas, 10))) {
-        throw new Error("Invalid bazas request");
+        throw new Error(`No podés pedir ${bazas}.`);
       }
+
       console.log("Done requesting");
       this.currentRound.doneRequestingBazas = true;
     }
@@ -102,11 +102,11 @@ class BazasEngine {
     );
 
     if (hasAlreadyPlayed) {
-      throw new Error(`Player ${player.name} has already played this round`);
+      throw new Error(`Ya tiraste esta ronda, ${player.name}`);
     }
 
     if (playerId !== this.currentRound.nextToPlay) {
-      throw new Error(`It's not player ${player.name}'s turn.`);
+      throw new Error(`No es tu turno, ${player.name}`);
     }
 
     if (this.currentRound.playedCards.length === 0) {
@@ -116,7 +116,7 @@ class BazasEngine {
         player.hasSuit(this.currentRound.firstCard.suit) &&
         card.suit !== this.currentRound.firstCard.suit
       ) {
-        throw new Error("Invalid suit played");
+        throw new Error("No podés tirar ese palo, estás obligado.");
       }
     }
 
