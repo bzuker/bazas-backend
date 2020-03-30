@@ -54,7 +54,7 @@ class Room {
         player = participant.player;
         socket.emit('cards', player.hand);
       } else {
-        console.log("Adding player", name);
+        console.log(`Adding player ${name} to room ${this.id}`);
         player = this.bazas.addPlayer(name);
         this.participants.push({ socket, player, pwd });
   
@@ -99,7 +99,9 @@ class Room {
           this.room.emit("next", this.getRoomInfo());
 
           if (nextRound === 'GAME OVER') {
-            this.room.emit('game over', this.bazas.getScoreTable());
+            const scores = this.bazas.getScoreTable();
+            console.log(`Game over on room ${this.id}. ${scores[0].name} won`);
+            this.room.emit('game over', scores);
           }
 
           if (nextRound) {

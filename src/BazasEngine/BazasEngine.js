@@ -116,7 +116,7 @@ class BazasEngine {
         player.hasSuit(this.currentRound.firstCard.suit) &&
         card.suit !== this.currentRound.firstCard.suit
       ) {
-        throw new Error("No podés tirar ese palo, estás obligado.");
+        throw new Error(`No podés tirar ese palo ${player.name}, estás obligado.`);
       }
     }
 
@@ -284,7 +284,7 @@ class BazasEngine {
   }
 
   getScoreTable() {
-    return this.getPlayers().sort((a, b) => a.score - b.score);
+    return this.getPlayers().sort((a, b) => b.score - a.score);
   }
 }
 
