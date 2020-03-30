@@ -21,11 +21,12 @@ app.get("/", (request, response) => {
 });
 
 app.post("/create", (req, res) => {
-  const { startWith, endWith, selectStartingPlayer } = req.body;
+  const { startWith, endWith, selectStartingPlayer, mandatoryTriumph } = req.body;
   const room = Room.createRoom(io, {
     initialCardAmount: parseInt(startWith, 10),
     lastCardAmount: parseInt(endWith, 10),
-    selectStartingPlayer
+    selectStartingPlayer,
+    mandatoryTriumph
   });
 
   rooms.push(room);

@@ -3,7 +3,8 @@ const { createDeck } = require("./Deck");
 const defaultSettings = {
   initialCardAmount: 3,
   lastCardAmount: 8,
-  selectStartingPlayer: false
+  selectStartingPlayer: false,
+  mandatoryTriumph: false
 };
 
 class BazasEngine {
@@ -117,6 +118,14 @@ class BazasEngine {
         card.suit !== this.currentRound.firstCard.suit
       ) {
         throw new Error(`No podés tirar ese palo ${player.name}, estás obligado.`);
+      }
+
+      if (
+        this.settings.mandatoryTriumph &&
+        player.hasSuit(this.currentRound.triumphCard.suit) &&
+        card.suit !== this.currentRound.triumphCard.suit
+      ) {
+        throw new Error(`No podés tirar ese palo ${player.name}, estás obligado al triunfo.`);
       }
     }
 
