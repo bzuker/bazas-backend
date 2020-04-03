@@ -118,9 +118,7 @@ class BazasEngine {
         card.suit !== this.currentRound.firstCard.suit
       ) {
         throw new Error(`No podés tirar ese palo ${player.name}, estás obligado.`);
-      }
-
-      if (
+      } else if (
         this.settings.mandatoryTriumph &&
         player.hasSuit(this.currentRound.triumphCard.suit) &&
         card.suit !== this.currentRound.triumphCard.suit
